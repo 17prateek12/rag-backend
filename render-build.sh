@@ -1,15 +1,22 @@
 #!/usr/bin/env bash
-echo "🔍 Scanning for broken 'from six.moves import _thread' imports..."
 
-# Find and patch all occurrences in .venv
-FILES=$(grep -rl "from six.moves import _thread" .venv)
+echo "🔧 Starting build process..."
 
-if [ -z "$FILES" ]; then
-  echo "✅ No problematic imports found. Nothing to patch."
-else
-  for file in $FILES; do
-    echo "⚙️  Patching $file"
+# Upgrade pip and install dependencies
+pip install --upgrade pip
+pip install -r requirements.txt
+
+# Patch `six.moves._thread` issue in all relevant tz.py files
+echo "🩹 Looking for 'six.moves._thread' import in dateutil tz.py files..."
+
+find .venv -type f -name "tz.py" | while read -r file; do
+  if grep -q "from six.moves import _thread" "$file"; then
+    echo "⚠️ Found and patching: $file"
     sed -i 's/from six.moves import _thread/import _thread/' "$file"
-  done
-  echo "✅ All problematic imports patched."
-fi
+    echo "✅ Patched: $file"
+  else
+    echo "ℹ️ No patch needed: $file"
+  fi
+done
+
+echo "✅ Build script finished successfully."
