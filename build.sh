@@ -1,13 +1,14 @@
 #!/usr/bin/env bash
 
-# Absolute path to the file inside the installed package
-TARGET_FILE=".venv/lib/python3.11/site-packages/dateutil/tz/tz.py"
+echo "Running build.sh: patching newspaper3k/_thread issue"
 
-# Fix the import error caused by newspaper3k
-# Only replace if it exists and has the broken line
-if grep -q "from six.moves import _thread" "$TARGET_FILE"; then
-  echo "Patching $TARGET_FILE to fix import error..."
+# Find the tz.py file inside the dateutil module
+TARGET_FILE=$(find server -type f -path "*/dateutil/tz/tz.py" | head -n 1)
+
+if [ -n "$TARGET_FILE" ]; then
+  echo "Found tz.py at $TARGET_FILE"
   sed -i 's/from six.moves import _thread/import _thread/' "$TARGET_FILE"
+  echo "Patched $TARGET_FILE"
 else
-  echo "No patch needed for $TARGET_FILE"
+  echo "tz.py not found. Skipping patch."
 fi
