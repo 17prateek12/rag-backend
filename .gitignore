@@ -10,6 +10,8 @@ build/
 # Virtualenv
 .server/
 .server
+.venv
+.venv/
 
 # VSCode
 .vscode/
