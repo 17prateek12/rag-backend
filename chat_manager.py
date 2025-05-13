@@ -1,11 +1,17 @@
 import redis
 import uuid
 import json
-from config import REDIS_URL
+from config import REDIS_URL, REDIS_PORT, REDIS_DECODE, REDIS_HOST, REDIS_PASSWORD, REDIS_USERNAME
 from postgres_persistence import save_session_to_postgres
 import time
 
-r = redis.Redis.from_url(REDIS_URL, decode_responses=True)
+r = redis.Redis(
+    host=REDIS_HOST,
+    port=REDIS_PORT,
+    decode_responses=REDIS_DECODE,
+    username=REDIS_USERNAME,
+    password=REDIS_PASSWORD,
+)
 SESSION_TTL_SECONDS = 86400
 
 def create_session():

@@ -1,9 +1,9 @@
 from qdrant_client import QdrantClient
 from langchain_community.embeddings import JinaEmbeddings
 from google import genai
-from config import QDRANT_URL, JINA_API_KEY, GEMINI_API_KEY
+from config import QDRANT_URL, JINA_API_KEY, GEMINI_API_KEY, QDRANT_API
 
-qdrant = QdrantClient(url=QDRANT_URL)
+qdrant = QdrantClient(url=QDRANT_URL, api_key=QDRANT_API)
 embedding_model = JinaEmbeddings(api_key=JINA_API_KEY, model_name="jina-embeddings-v2-base-en")
 
 API_KEY=GEMINI_API_KEY

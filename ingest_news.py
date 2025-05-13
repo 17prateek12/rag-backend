@@ -5,9 +5,9 @@ from qdrant_client.models import Distance, VectorParams, PointStruct
 import uuid
 import feedparser
 
-from config import QDRANT_URL, JINA_API_KEY
+from config import QDRANT_URL, JINA_API_KEY, QDRANT_API
 
-qdrant = QdrantClient(url=QDRANT_URL)
+qdrant = QdrantClient(url=QDRANT_URL, api_key=QDRANT_API)
 embedding_model = JinaEmbeddings(api_key=JINA_API_KEY, model_name="jina-embeddings-v2-base-en")
 COLLECTION_NAME = "news_article"
 
